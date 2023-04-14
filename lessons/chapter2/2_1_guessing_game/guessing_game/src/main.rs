@@ -21,7 +21,7 @@ fn main() {
         io::stdin()
             .read_line(&mut guess)//also need mut here
             .expect("Failed to read line");
-            
+
         /*
         let x = 5;
         let y = 10;
@@ -42,8 +42,21 @@ fn main() {
         The parse function will return Result just like read_line does, so you
         need an expect.
         */
-        let guess: u32 = guess.trim().parse().expect("Please type a number");
+        //let guess: u32 = guess.trim().parse().expect("Please type a number");
 
+        /*
+        Because the parse function return a Result, so you can use match to choose
+        the diffrent way dealing with Ok or Err.
+        Ok means parse success, and return the num. So if the Result matches Ok, than
+        we return num to aply to guess.
+        Err means parse error, and the _ means that catchall value. wW’re saying we 
+        want to match all Err values, no matter what information they have inside them.
+        */
+        let guess: u32 = match guess.trim().parse() {
+            Ok(num) => num,
+            Err(_) => continue
+        };
+        
         match guess.cmp(&secret_number){
             Ordering::Less => println!("Too small!"),
             Ordering::Greater => println!("Too big!"),
